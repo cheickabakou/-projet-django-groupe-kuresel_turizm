@@ -20,11 +20,11 @@
             <div class="destination-info">
                 <p class="destination-desc">LA CLEF ile sessiz bir konaklamanın tadını çıkarın</p>
                 <div class="destination-price">
-                    <span class="price">899€</span>
+                    <span class="price">380€</span>
                     <span class="duration">10 gün</span>
                 </div>
                 <div class="action-section">
-                  <a href="#" class="btn-reserve">
+                  <a href="{% url 'visite:reservation' %}" class="btn-reserve" onclick="selectDestination('Paris','Paris,Fransa,899')">
                          Rezervasyon Yap
                   </a>
                </div>
@@ -38,11 +38,11 @@
             <div class="destination-info">
                 <p class="destination-desc">Anıtkabir (Atatürk Mozolesi) Ankara, Müze</p>
                 <div class="destination-price">
-                    <span class="price">450€</span>
+                    <span class="price">350€</span>
                     <span class="duration">7 gün</span>
                 </div>
                 <div class="action-section">
-                  <a href="#" class="btn-reserve">
+                  <a href="{% url 'visite:reservation' %}" class="btn-reserve" onclick="selectDestination('Ankara','Ankara,Türkiye,450')">
                          Rezervasyon Yap
                   </a>
                </div>
@@ -56,11 +56,11 @@
             <div class="destination-info">
                 <p class="destination-desc">Etkinlikler ve yaratıcılık</p>
                 <div class="destination-price">
-                    <span class="price">1200€</span>
+                    <span class="price">320€</span>
                     <span class="duration">12 gün</span>
                 </div>
                 <div class="action-section">
-                  <a href="#" class="btn-reserve">
+                  <a href="{% url 'visite:reservation' %}" class="btn-reserve" onclick="selectDestination('Tokyo','Tokyo,Japonya,850')">
                          Rezervasyon Yap
                   </a>
                </div>
@@ -68,6 +68,27 @@
         </div>
 
 </div>
+<script>
+function selectDestination(id, name, price) {
+    localStorage.setItem('selectedDestinationId', id);
+    localStorage.setItem('selectedDestinationName', name);
+    localStorage.setItem('selectedDestinationPrice', price);
+    window.location.href = 'reservation.html';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.destination-card').forEach(card => {
+        card.addEventListener('click', function(e) {
+            if (!e.target.closest('.btn-reserve')) {
+                const id = this.dataset.id;
+                const name = this.dataset.name;
+                const price = this.dataset.price;
+                selectDestination(id, name, price);
+            }
+        })
+    })
+})
+</script>
 
 <style>
 

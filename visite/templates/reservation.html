@@ -1,0 +1,723 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #4673a0;
+            color: #333;
+            line-height: 1.6;
+        }
+
+    
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: rgb(15, 15, 15);
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo span {
+            color: #4dabf7;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition:  0.3s;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .login-btn {
+            background-color: #007BFF;
+            color: rgb(27, 26, 26);
+            border: none;
+            border-radius: 8px;
+            padding: 10px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .login-btn:hover {
+            background-color: #0056b3;
+        }
+
+        
+        .container {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        
+        .reservation-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            background: rgb(241, 236, 236);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .reservation-header h1 {
+            color: #1e3c72;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .reservation-header p {
+            color: #666;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+
+        .reservation-form-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        
+        .form-section {
+            background: rgb(247, 244, 244);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-section h2 {
+            color: #1e3c72;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #131111;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #444;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .required {
+            color: #e63946;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 12px 16px;
+            border: 2px solid #1d1e1f;
+            border-radius: 8px;
+            font-size: 16px;
+            color: black !important;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #007BFF;
+            
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        }
+
+        .form-full-width {
+            grid-column: 1 / -1;
+        }
+
+        .summary-section {
+            background: rgb(253, 252, 252);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            height: fit-content;
+            position: sticky;
+            top: 2rem;
+        }
+
+        .summary-section h2 {
+            color: #1e3c72;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #0f0e0e;
+        }
+
+        .destination-summary {
+            background: #788ca0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #007BFF;
+        }
+
+        .destination-summary h3 {
+            color: #1e3c72;
+            margin-bottom: 0.5rem;
+        }
+
+        .price-breakdown {
+            margin: 1.5rem 0;
+        }
+
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid #49728a;
+        }
+
+        .price-item.total {
+            border-top: 2px solid #1e3c72;
+            border-bottom: none;
+            padding-top: 1rem;
+            margin-top: 1rem;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #1e3c72;
+        }
+
+        .price-value {
+            font-weight: 600;
+        }
+
+
+        .reservation-btn-main {
+            background-color: #007BFF;
+            color: rgb(15, 14, 14);
+            border: none;
+            border-radius: 8px;
+            padding: 16px 32px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            width: 100%;
+            margin-top: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .reservation-btn-main:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 91, 187, 0.2);
+        }
+
+    
+        .payment-section {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid #fcf5f5;
+        }
+
+        .payment-options {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .payment-option {
+            flex: 1;
+            text-align: center;
+            padding: 1rem;
+            border: 2px solid #556781;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .payment-option.selected {
+            border-color: #007BFF;
+            background: #fafbfc;
+        }
+
+    
+        footer {
+            background: #1e3c72;
+            color: rgb(245, 242, 242);
+            padding: 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        
+        .card-icons {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            font-size: 1.5rem;
+        }
+
+
+        @media (max-width: 992px) {
+            .reservation-form-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .summary-section {
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .form-section,
+            .summary-section {
+                padding: 1.5rem;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                 <span>Küresel</span>Macera
+            </div>
+            <ul class="nav-links">
+                <li><a href="{% url 'core:anasayfa' %}">Ana Sayfa</a></li>
+            </ul>
+            <a href="{% url 'accounts:login' %}" class="login-btn">GİRİŞ YAP</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="reservation-header">
+            <h1>SEYAHAT REZERVASYONU</h1>
+            <p>Aşağıdaki formu doldurarak rezervasyonunuzu tamamlayın. * ile işaretli alanlar zorunludur.</p>
+        </div>
+        <div class="reservation-form-container">
+        
+            <div class="form-section">
+                <h2> Kişisel Bilgiler</h2>
+                
+                <form id="reservationForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="fullName">Ad Soyad <span class="required">*</span></label>
+                            <input type="text" id="fullName" name="fullName" required placeholder="Ahmet Yılmaz">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">E-posta Adresi <span class="required">*</span></label>
+                            <input type="email" id="email" name="email" required placeholder="ahmet.yilmaz@email.com">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Telefon Numarası <span class="required">*</span></label>
+                            <input type="tel" id="phone" name="phone" required placeholder="+90 555 123 45 67">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="nationality">Uyruk <span class="required">*</span></label>
+                            <select id="nationality" name="nationality" required>
+                                <option value="">Seçiniz...</option>
+                                <option value="TR">Türk</option>
+                                <option value="FR">Fransız</option>
+                                <option value="DE">Alman</option>
+                                <option value="US">Amerikalı</option>
+                                <option value="other">Diğer</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <h2 style="margin-top: 2.5rem;"> Seyahat Detayları</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="destination">Destinasyon <span class="required">*</span></label>
+                            <select id="destination" name="destination" required>
+                                <option value="">Bir destinasyon seçin</option>
+                                <option value="Paris">Paris - OTEL</option>
+                                <option value="Ankara">Ankara - Muze</option>
+                                <option value="Tokyo">Tokyo - Park</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="departureDate">Gidiş Tarihi <span class="required">*</span></label>
+                            <input type="date" id="departureDate" name="departureDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="returnDate">Dönüş Tarihi <span class="required">*</span></label>
+                            <input type="date" id="returnDate" name="returnDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="duration">Süre <span class="required">*</span></label>
+                            <select id="duration" name="duration" required>
+                                <option value="3">3 gün</option>
+                                <option value="5">5 gün</option>
+                                <option value="7">7 gün</option>
+                                <option value="10">10 gün</option>
+                                <option value="14">14 gün</option>
+                            </select>
+                        </div>  
+                        <div class="form-group">
+                            <label for="travelers">Yolcu Sayısı <span class="required">*</span></label>
+                            <select id="travelers" name="travelers" required>
+                                <option value="1">1 kişi</option>
+                                <option value="2">2 kişi</option>
+                                <option value="3">3 kişi</option>
+                                <option value="4">4 kişi</option>
+                                <option value="5">5 kişi</option>
+                                <option value="6+">6+ kişi (grup)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="package">Paket Türü <span class="required">*</span></label>
+                            <select id="package" name="package" required>
+                                <option value="standard">Standart - 420€'dan başlayan</option>
+                                <option value="comfort">Konfor - 550€'dan başlayan</option>
+                                <option value="premium">Premium - 690€'dan başlayan</option>
+                                <option value="luxury">Lüks - 850€'dan başlayan</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group form-full-width">
+                        <label for="specialRequests">Özel İstekler</label>
+                        <textarea id="specialRequests" name="specialRequests" rows="4" placeholder="Gıda alerjileri, konaklama tercihleri, özel kutlamalar..."></textarea>
+                    </div>
+                    <div class="payment-section">
+                        <h2> Ödeme Yöntemi</h2>
+                        <div class="payment-options">
+                            <div class="payment-option selected" data-payment="card" onclick="selectPayment('card')">
+                                <div><i class="bi bi-credit-card"></i></div>
+                                <div>Kredi Kartı</div>
+                            </div>
+                            <div class="payment-option" data-payment="paypal" onclick="selectPayment('paypal')">
+                                <div><i class="bi bi-circle-fill text-primary"></i></div>
+                                <div>PayPal</div>
+                            </div>
+            
+                        </div>
+                        
+                        <input type="hidden" id="paymentMethod" name="paymentMethod" value="card">
+                        
+                        <div id="cardDetails" class="form-grid" style="margin-top: 1.5rem;">
+                            <div class="form-group">
+                                <label for="cardNumber">Kart Numarası <span class="required">*</span></label>
+                                <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456">
+                                <div class="card-icons">
+                                    <span><i class="bi bi-credit-card"></i></span>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="cardName">Kart Üzerindeki İsim <span class="required">*</span></label>
+                                <input type="text" id="cardName" name="cardName" placeholder="AHMET YILMAZ">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="cardExpiry">Son Kullanma Tarihi <span class="required">*</span></label>
+                                <input type="month" id="cardExpiry" name="cardExpiry">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="cardCVC">CVC <span class="required">*</span></label>
+                                <input type="text" id="cardCVC" name="cardCVC" placeholder="123" maxlength="3">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="reservation-btn-main">
+                        UGUNUZU YÜKSELTİN<br>
+                        <small style="font-size: 14px; font-weight: normal; opacity: 0.9;">Onayla ve Öde</small>
+                    </button>
+                </form>
+            </div>
+            <div class="summary-section">
+                <h2> Rezervasyon Özeti</h2>
+                <div class="destination-summary">
+                    <h3 id="summaryDestination">Destinasyon</h3>
+                    <p id="summaryDates">Tarihler</p>
+                    <p id="summaryTravelers">Yolcular</p>
+                    <p id="summaryPackage">Paket</p>
+                </div>
+                <div class="price-breakdown">
+                    <h3>Fiyat Detayı</h3>
+                    
+                    <div class="price-item">
+                        <span>Kişi başı paket</span>
+                        <span class="price-value" id="pricePerPerson">0 €</span>
+                    </div>
+                    <div class="price-item">
+                        <span>Yolcu sayısı</span>
+                        <span class="price-value" id="summaryTravelersCount">0</span>
+                    </div>
+                    <div class="price-item">
+                        <span>Konfor ek ücreti</span>
+                        <span class="price-value" id="comfortFee">0 €</span>
+                    </div>                   
+                    <div class="price-item">
+                        <span>Vergi ve ücretler</span>
+                        <span class="price-value" id="taxes">0 €</span>
+                    </div>                   
+                    <div class="price-item total">
+                        <span>TOPLAM</span>
+                        <span class="price-value" id="totalPrice">0 €</span>
+                    </div>
+                </div>
+                <div style="margin-top: 2rem; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+                    <h4> Pakete Dahil Olanlar:</h4>
+                    <ul style="margin-left: 1.2rem; margin-top: 0.5rem; color: #555;">
+                        <li>Gidiş-dönüş uçak bileti</li>
+                        <li>4 yıldızlı otel konaklaması</li>
+                        <li>Kahvaltı dahil</li>
+                        <li>Havaalanı transferleri</li>
+                        <li>Temel seyahat sigortası</li>
+                        <li>Tur rehberi</li>
+                    </ul>
+                </div>
+                <div style="margin-top: 1.5rem; font-size: 0.9rem; color: #666; text-align: center;">
+                    <p> Ödeme sonrası anında onay</p>
+                    <p> 7 gün öncesine kadar ücretsiz iptal</p>
+                    <p> 7/24 müşteri desteği</p>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="footer-content">
+            <p> 2025 Küresel Macera - Tüm hakları saklıdır</p>
+            <p> Dünya maceranız burada başlıyor</p>
+        </div>
+    </footer>
+    <script>
+        const prices = {
+            Ankara: { standard: 380, comfort: 500, premium: 650, luxury: 800 },
+            Paris: { standard: 350, comfort: 470, premium: 600, luxury: 750 },
+            Tokyo: { standard: 320, comfort: 450, premium: 580, luxury: 850 }
+        };
+
+        function selectPayment(method) {
+            document.querySelectorAll('.payment-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            document.querySelector([data-payment == "${method}"]).classList.add('selected');
+            document.getElementById('paymentMethod').value = method;
+            const cardDetails = document.getElementById('cardDetails');
+            if (method === 'card') {
+                cardDetails.style.display = 'grid';
+            } else {
+                cardDetails.style.display = 'none';
+            }
+        }
+
+        function updateSummary() {
+            const destination = document.getElementById('destination').value;
+            const departureDate = document.getElementById('departureDate').value;
+            const returnDate = document.getElementById('returnDate').value;
+            const travelers = parseInt(document.getElementById('travelers').value);
+            const packageType = document.getElementById('package').value;
+        
+            if (destination) {
+                const destinationNames = {
+                    Paris: 'Paris,Fransa-romantik tur',
+                    Ankara:'Ankara,Türkiye-tarihi tur',
+                    Tokyo:'Tokyo,japon-modern tur'   
+                };
+                
+                document.getElementById('summaryDestination').textContent = destinationNames[destination] || destination;
+            }
+
+            if (departureDate && returnDate) {
+                document.getElementById('summaryDates').textContent = 
+                    '${formatDate(departureDate)} - ${formatDate(returnDate)}';
+            }
+            
+            if (travelers) {
+                document.getElementById('summaryTravelers').textContent = '${travelers} kişi';
+                document.getElementById('summaryTravelersCount').textContent = travelers;
+            }
+        
+            if (packageType) {
+                const packageNames = {
+                    standard: 'Standart',
+                    comfort: 'Konfor',
+                    premium: 'Premium',
+                    luxury: 'Lüks'
+                };
+                document.getElementById('summaryPackage').textContent = packageNames[packageType];
+            }
+            
+            let basePrice = 0;
+            if (destination && prices[destination]) {
+                basePrice = prices[destination][packageType] || 0;
+            }
+        
+            const comfortFee = packageType === 'comfort' ? 50 : 
+            packageType === 'premium' ? 120 : 
+            packageType === 'luxury' ? 250 : 0;
+            const taxes = basePrice * 0.10;
+            const total = (basePrice * travelers) + comfortFee + taxes;
+            document.getElementById('pricePerPerson').textContent = '${basePrice} €';
+            document.getElementById('comfortFee').textContent = '${comfortFee} €';
+            document.getElementById('taxes').textContent = '${taxes.toFixed(2)} €';
+            document.getElementById('totalPrice').textContent = '${total.toFixed(2)} €';
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('tr-TR', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+        }
+
+        document.getElementById('reservationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const requiredFields = ['fullName', 'email', 'phone', 'destination', 'departureDate', 'travelers'];
+            let isValid = true;
+            requiredFields.forEach(field => {
+                const element = document.getElementById(field);
+                if (!element.value.trim()) {
+                    element.style.borderColor = '#e63946';
+                    isValid = false;
+                } else {
+                    element.style.borderColor = '#e1e5eb';
+                }
+            });
+            
+            if (!isValid) {
+                alert(' Lütfen * ile işaretli tüm zorunlu alanları doldurun');
+                return;
+            }
+            
+            const formData = {
+                fullName: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                destination: document.getElementById('destination').options[document.getElementById('destination').selectedIndex].text,
+                departureDate: document.getElementById('departureDate').value,
+                travelers: document.getElementById('travelers').value,
+                totalPrice: document.getElementById('totalPrice').textContent
+            };
+
+            const confirmMessage = `
+             REZERVASYON ONAYLANDI!
+            Teşekkürler ${formData.fullName}!
+            Rezervasyon Detaylarınız:
+            Destinasyon: ${formData.destination}
+            Gidiş Tarihi: ${formatDate(formData.departureDate)}
+            Yolcu Sayısı: ${formData.travelers}
+            Toplam Tutar: ${formData.totalPrice}
+            Onay e-postası ${formData.email} adresinize gönderildi
+            Ekibimiz 24 saat içinde sizinle iletişime geçecek
+            Küresel Macera ile iyi yolculuklar! 
+            `;
+            
+            alert(confirmMessage);
+        });
+
+        const updateFields = ['destination', 'departureDate', 'returnDate', 'travelers', 'package'];
+        updateFields.forEach(field => {
+            document.getElementById(field).addEventListener('change', updateSummary);
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('departureDate').min = today;
+            document.getElementById('returnDate').min = today;
+            const defaultDate = new Date();
+            defaultDate.setDate(defaultDate.getDate() + 7);
+            document.getElementById('departureDate').value = defaultDate.toISOString().split('T')[0];
+            const returnDate = new Date(defaultDate);
+            returnDate.setDate(returnDate.getDate() + 3);
+            document.getElementById('returnDate').value = returnDate.toISOString().split('T')[0];
+            updateSummary();
+            document.getElementById('departureDate').addEventListener('change', function() {
+                const departure = new Date(this.value);
+                document.getElementById('returnDate').min = this.value;
+                const returnInput = document.getElementById('returnDate');
+                const currentReturn = new Date(returnInput.value);
+                if (currentReturn < departure) {
+                    const newReturn = new Date(departure);
+                    newReturn.setDate(newReturn.getDate() + 3);
+                    returnInput.value = newReturn.toISOString().split('T')[0];
+                }
+                updateSummary();
+            });
+
+            document.getElementById('returnDate').addEventListener('change', updateSummary);
+        });
+    </script>
+</body>
+</html>
+{% endblock %}
