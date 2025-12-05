@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet"  href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <title>document</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css'%}" />
+  </head>
+  <style>
+     /* ===== SECTION JOURNEY ===== */
+.journey {
+  padding: 5rem 1rem;
+  background: #f8fafc;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #1e293b;
+}
+
+.section-desc {
+  text-align: center;
+  color: #64748b;
+  margin-bottom: 3rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ===== GRID DES CARTES ===== */
+.journey-grid {
+  display: grid;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Sur desktop : 3 colonnes */
+@media (min-width: 768px) {
+  .journey-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ===== CARTE INDIVIDUELLE ===== */
+.journey-card {
+  position: relative;
+  height: 320px;
+  border-radius: 15px;
+  overflow: hidden; /* ESSENTIEL */
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.journey-card:hover {
+  transform: translateY(-5px);
+}
+
+/* ===== FACE AVANT (visible) ===== */
+.card-front {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 2rem;
+  background: #f1f5f9;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 2;
+  transition: transform 0.5s;
+}
+
+.card-front span {
+  font-size: 3rem;
+  color: #3b82f6;
+  margin-bottom: 1.5rem;
+}
+
+.card-front h4 {
+  font-size: 1.3rem;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+/* ===== FACE ARRIÈRE (cachée) ===== */
+.card-back {
+  position: absolute;
+  top: 100%; /* Commence EN BAS */
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 2rem;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  transition: top 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  z-index: 3;
+}
+
+.card-back span {
+  display: inline-block;
+  padding: 10px;
+  font-size: 2rem;
+  border: 2px solid white;
+  border-radius: 50%;
+  margin-bottom: 1.5rem;
+}
+
+.card-back h4 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.card-back p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+
+/* ===== EFFET AU SURVOL ===== */
+.journey-card:hover .card-back {
+  top: 0; /* Monte pour couvrir la carte */
+}
+
+.journey-card:hover .card-front {
+  transform: translateY(-100%);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 767px) {
+  .journey {
+    padding: 3rem 1rem;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .journey-card {
+    height: 280px;
+  }
+}
+    </style>
+  <body>
+    <nav>
+      <div class="nav_header">
+        <div class="nav_logo">
+          <a href="#" class="logo">SEYAHAT ETMEK</a>
+        </div>
+        <div class="nav_menu_btn" id="menu-btn">
+          <i class="ri-menu-line"></i>
+        </div>
+      </div>
+      <ul class="nav_links" id="nav-links">
+        <li><a href="{% url 'core:anasayfa' %}">ANASAYFA</a></li>
+        <li><a href="{% url 'core:about' %}">HAKKINDA</a></li>
+        <li><a href="#tour">BİLGİ</a></li>
+        <li><a href="#package">PAKET</a></li>
+        <li><a href="{% url 'core:contact' %}">İLETİŞİM</a></li>
+        <li><a href="#">.</a></li>
+      </ul>
+      <div class="nav_btns">
+        <a href="{% url 'accounts:login' %}" class="btn">GİRİŞ YAP</a>
+        <a href="#" class="btn">ÇIKIŞ YAP</a>
+      </div>
+    </nav>
+
+    <header id="home">
+      <div class="header_container">
+        <div class="header_content">
+          <p>SEYAHAT YOLCULUĞUNUZU YÜKSELTİN</p>
+          <h1>Büyüyü yaşayın!</h1>
+          <div class="nav_btns">
+            <a href="destinations" class="btn">Şimdi Bir Gezi Rezervasyonu Yapın</a>
+          </div>
+        </div>
+        <div class="header_image">
+          <img src="https://pngimg.com/uploads/plane/plane_PNG101217.png" alt="vol" />
+        </div>
+      </div>
+    </header>
+
+    <section class="section_container destination_container" id="about">
+      <h2 class="section_header">Popüler Destinasyon</h2>
+      <p class="section_description">
+        Dünyanın En Sevilen Destinasyonlarını Keşfedin
+      </p>
+      <div class="destination_grid">
+        <div class="destination_card">
+          <img src="https://i.pinimg.com/736x/4a/f5/63/4af563aa26d3a4d3d612771aa1dc640f.jpg" alt="destination" />
+          <div class="destination_card_details">
+            <div>
+              <h4>OTEL LA CLEF</h4>
+              <p>Paris, FRANSA</p>
+            </div>
+            <div class="destination_rating">
+              <span><i class="ri-star-fill"></i></span>
+              4.7
+            </div>
+          </div>
+        </div>
+        <div class="destination_card">
+          <img src="https://i.pinimg.com/736x/b4/de/be/b4debed569d9a5cc0d912dfbc040cdbe.jpg" alt="destination" />
+          <div class="destination_card_details">
+            <div>
+              <h4>Anıtkabir (Atatürk's Mausoleum) Ankara, Museum, Turkey</h4>
+              <p>Ankara, Turkey</p>
+            </div>
+            <div class="destination_rating">
+              <span><i class="ri-star-fill"></i></span>
+              4.5
+            </div>
+          </div>
+        </div>
+        <div class="destination_card">
+          <img src="https://i.pinimg.com/736x/8a/7f/d3/8a7fd3844b0789cbc3661f40e6bc0f76.jpg" alt="destination" />
+          <div class="destination_card_details">
+            <div>
+              <h4>sanat galerisi</h4>
+              <p>BRÜKSEL</p>
+            </div>
+            <div class="destination_rating">
+              <span><i class="ri-star-fill"></i></span>
+              4.8
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section journey" id="tour">
+      <h2 class="section-title">Gökyüzüne Yolculuk Basitleştirildi!</h2>
+      <p class="section-desc">
+        Bir sonraki maceranız için Zahmetsiz Planlama
+      </p>
+      <div class="journey-grid">
+
+          <div class="journey-card">
+              <div class="card-front">
+                  <span><i class="ri-bookmark-3-line"></i></span>
+                  <h4>Sorunsuz Rezervasyon Süreci</h4>
+               </div>
+
+               <div class="card-black">
+                  <h4>Kolay Rezervasyon, Bir Tık Uzakta</h4>
+                  <p  style="background: #1e3a8a; color: white; padding: 1.5rem; border-radius: 10px; margin: 1rem 0;">
+                    <span><i class="ri-bookmark-3-line">
+                     Uçuş ve konaklamadan aktivite ve transferlere kadar ihtiyacınız   
+                     olan her şey parmaklarınızın ucunda,seyahat planlaması zahmetsiz.
+                   </i></span>
+                  </p>
+              </div>
+           </div>
+
+          <div class="journey-card">
+               <div class="card-front">
+                   <span><i class="ri-landscape-fill"></i></span>
+                   <h4>Tailored Itineraries</h4>
+               </div>
+              <div class="card-black">
+                   <h4>Customized Plans Just for You</h4>
+                   <p style="background: #1e3a8a; color: white; padding: 1.5rem; border-radius: 10px; margin: 1rem 0;">
+                      <span><i class="ri-landscape-fill">
+                        Tercihlerinize ve ilgi alanlarınıza göre tasarlanmış kişiselleştirilmiş 
+                        seyahat planlarının keyfini çıkarın.  İster macera ister kültürel bir deneyim arıyor olun,
+                        özel olarak hazırlanmış seyahat planlarımız yolculuğunuzun size özel olmasını sağlar.
+                        </i></span>
+                   </p>
+              </div>
+          </div>
+
+          <div class="journey-card">
+               <div class="card-front">
+                  <span><i class="ri-map-2-line"></i></span>
+                    <h4>Uzman Yerel İçgörüler</h4>
+               </div>
+              <div class="card-black">
+                  <h4>İçeriden ipuçları ve öneriler</h4>
+                  <p style="background: #1e3a8a; color: white; padding: 1.5rem; border-radius: 10px; margin: 1rem 0;">
+                    <span><i class="ri-map-2-line">
+                      Yemek, gezi ve gizli cevherler için özenle seçilmiş öneriler sunuyoruz, 
+                      böylece her bir yeri oranın yerlisi gibi deneyimleyebilirsiniz.
+                     </i></span>
+                  </p>
+              </div>
+          </div>
+      </div>
+    </section>
+
+    <section class="section_container showcase_container" id="package">
+      <div class="showcase_image">
+        <img src="https://i.pinimg.com/736x/9e/30/9c/9e309cd4ccd341f8e080be38692e1b54.jpg" alt="showcase" />
+      </div>
+      <div class="showcase_content">
+        <h4>KÜRESEL-TURİZM İLE SEYAHAT TUTKUNUZU ORTAYA ÇIKARIN</h4>
+        <p>
+          Seyahat hayallerinizin gerçeğe dönüştüğü Skywings ile benzersiz bir yolculuğa çıkın.
+          Misyonumuz, ister kalabalık şehir manzaralarının canlı enerjisini, ister el değmemiş
+          sahillerin dingin güzelliğini, ister antik anıtların büyüleyici tarihini arıyor olun,
+          maceralarınıza ilham vermek ve onları kolaylaştırmaktır. Skywings’de, her seyahatin 
+          sizin benzersiz tercihlerinize göre uyarlanmasını sağlayarak, uzmanlıkla seçilmiş 
+          destinasyonlar ve kişiselleştirilmiş seyahat programları sunuyoruz.  Gizli kalmış 
+          cevherleri keşfedin, kendinizi farklı kültürlere bırakın ve ömür boyu sürecek 
+          unutulmaz anılar yaratın.
+        </p>
+        <p>
+          Gökyüzü Kanatlarıyla, dünyanın harikalarını keşfetmek hiç bu kadar kolay olmamıştı.
+          İçeriden aldığımız ipuçları ve yerel bilgiler, size yeni yerlerde güvenle ve heyecanla
+          gezinme olanağı sağlar. Planlamaya başladığınız andan eve döndüğünüz güne kadar, seyahat 
+          deneyiminizi sorunsuz ve zenginleştirici kılmak için çalışıyoruz.
+        </p>
+        <div class="showcase_btn">
+          <button class="btn">
+            Şimdi Bir Uçuş Rezervasyonu Yapın
+            <span><i class="ri-arrow-right-line"></i></span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section_container banner_container">
+      <div class="banner_card">
+        <h4>1+</h4>
+        <p>AY Deneyimi</p>
+      </div>
+      <div class="banner_card">
+        <h4>9K</h4>
+        <p>Mutlu Müşteriler</p>
+      </div>
+      <div class="banner_card">
+        <h4>2.5</h4>
+        <p>Genel Derecelendirmeler</p>
+      </div>
+    </section>
+
+    <section class="section_container discover_container">
+      <h2 class="section_header">Dünyayı Yukarıdan Keşfedin</h2>
+      <p class="section_description">
+        Nefes Kesen Manzaraları ve Eşsiz Bakış Açılarını Deneyimleyin
+      </p>
+      <div class="discover_grid">
+        <div class="discover_card">
+          <span><i class="ri-camera-lens-line"></i></span>
+          <h4>Havadan Şehir Manzaraları</h4>
+          <p>
+            Mimari harikalara ve hareketli caddelere kuşbakışı 
+            bakarak eşsiz bir perspektiften şehri seyredin.
+          </p>
+        </div>
+        <div class="discover_card">
+          <span><i class="ri-ship-line"></i></span>
+          <h4>Kıyı Harikaları</h4>
+          <p>
+            El değmemiş kıyılar ve turkuaz suların üzerinden uçarak 
+            gizli koyları ve canlı mercan resiflerini keşfedin.
+          </p>
+        </div>
+        <div class="discover_card">
+          <span><i class="ri-landscape-line"></i></span>
+          <h4>Tarihi Yerler</h4>
+          <p>
+            Antik kalelerin ve diğer önemli yerlerin ihtişamını, 
+            kara turlarının sunamayacağı bir şekilde gözlemleyin.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section_container client_container">
+      <h2 class="section_header">Binden Fazla Gezgin Tarafından Sevildi</h2>
+      <p class="section_description">
+        Seyahat tutkusu ve değerli anıların öykülerini, 
+        değerli müşterilerimizin gözünden keşfedin.
+      </p>
+      
+      <div class="swiper">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide">
+            <div class="client_card">
+              <div class="client_content">
+                <div class="client_rating">
+                  <span><i class="ri-star-fill"></i></span>
+                  <span><i class="ri-star-fill"></i></span>
+                  <span><i class="ri-star-fill"></i></span>
+                  <span><i class="ri-star-fill"></i></span>
+                  <span><i class="ri-star-fill"></i></span>
+                </div>
+                <p>
+                  Skywings seyahat deneyimimi tamamen değiştirdi.  
+                  Kalabalık şehirlerde gizli cevherler bulmaktan, 
+                  alışılmışın dışındaki sakin yerleri keşfetmeye 
+                  kadar her ayrıntı özenle düşünülmüştü. 
+                  Seyahat deneyimini yükseltmek isteyen 
+                  herkese Skywings'i şiddetle tavsiye ederim!
+                </p>
+              </div>
+              <div class="client_details">
+                <img src="https://www.1stopdesign.com/wp-content/uploads/2018/04/profilo-uomo.jpg" alt="client" />
+                <div>
+                  <h4>rose </h4>
+                  <h5>Seyahat Blogger'ı</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="client_card">
+              <div class="client_content">
+                <div class="client_rating">
+                  <span><i class="ri-star-fill"></i></span>
+                  <span><i class="ri-star-fill"></i></span>
+                  <span><i class="ri-star-fill"></i></span>
+                  <span><i class="ri-star-fill"></i></span>
+                  <span><i class="ri-star-fill"></i></span>
+                </div>
+                <p>
+                  Son zamanlarda Gökkanatlarla yaşadığım macera muhteşemdi.  
+                  Kişiselleştirilmiş seyahat planları ve öneriler beni kendi 
+                  başıma asla bulamayacağım olağanüstü yerlere götürdü.  
+                  Onlarla bir sonraki maceramı şimdiden planlıyorum!
+                </p>
+              </div>
+              <div class="client_details">
+                <img src="https://www.1stopdesign.com/wp-content/uploads/2018/04/profilo-uomo.jpg" alt="client" />
+                <div>
+                  <h4>Emily Thompson'ın</h4>
+                  <h5>Macera Tutkunu</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="client_card">
+              <div class="client_content">
+                <div class="client_rating">
+                  <span><i class="ri-star-fill"></i></span>
+                  <span><i class="ri-star-fill"></i></span>
+                  <span><i class="ri-star-fill"></i></span>
+                  <span><i class="ri-star-fill"></i></span>
+                  <span><i class="ri-star-fill"></i></span>
+                </div>
+                <p>
+                  Gökyüzü Kanatları, tarihi mekânlarla ilgili araştırmalarıma 
+                  dönüştürücü bir deneyim kattı.  Eşsiz hava perspektifleri ve
+                  sağladığı yeni bakış açısı, incelediğim mekânlara karşı yeni 
+                  bir takdir ve anlayış düzeyi sağladı.  Hizmetlerini, diğer 
+                  tarihçilere ve kültür meraklılarına şiddetle tavsiye ederim.
+                </p>
+              </div>
+              <div class="client_details">
+                <img src="https://www.1stopdesign.com/wp-content/uploads/2018/04/profilo-uomo.jpg" alt="client" />
+                <div>
+                  <h4>lune</h4>
+                  <h5>Kültür Tarihçisi</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="client_card">
+              <div class="client_content">
+                <div class="client_rating">
+                  <span><i class="ri-star-fill"></i></span>
+                  <span><i class="ri-star-fill"></i></span>
+                  <span><i class="ri-star-fill"></i></span>
+                  <span><i class="ri-star-fill"></i></span>
+                  <span><i class="ri-star-fill"></i></span>
+                </div>
+                <p>
+                  İş ve seyahat arasında bir denge kurmak zor olabilir,
+                  ama Skywings bunu çok kolay hale getirdi.  Verimli planlama
+                   ve mükemmel öneriler sayesindeboş zamanlarımı en iyi şekilde 
+                   değerlendirdim ve seyahatimin her anının tadını çıkardım. Gelecek 
+                   seyahatlerde onlarla tekrar çalışmayı dört gözle bekliyorum.
+                </p>
+              </div>
+              <div class="client_details">
+                <img src="assets/client-4.jpg" alt="client" />
+                <div>
+                  <h4>David </h4>
+                  <h5>İşletme Yöneticisi</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer id="contact">
+      <div class="section_container footer_container">
+        <div class="footer_col">
+          <div class="footer_logo">
+            <a href="#" class="logo">Yükselenler</a>
+          </div>
+          <p>
+            Kapsamlı seyahat platformumuz aracılığıyla dünyayı 
+            kolaylıkla ve heyecanla keşfedin.  Yolculuğunuz burada, 
+            kusursuz planlamanın unutulmaz deneyimlerle buluştuğu yerde 
+            başlıyor.
+          </p>
+          <ul class="footer_socials">
+            <li>
+              <a href="#"><i class="ri-facebook-fill"></i></a>
+            </li>
+            <li>
+              <a href="#"><i class="ri-instagram-line"></i></a>
+            </li>
+            <li>
+              <a href="#"><i class="ri-youtube-line"></i></a>
+            </li>
+          </ul>
+        </div>
+      
+    </footer>
+
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="{% static 'js/main.js'%}"></script>
+  </body>
+</html>

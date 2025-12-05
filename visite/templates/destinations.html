@@ -1,0 +1,228 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+   
+<ul>
+    <li><a href="/visite/">ANASAYFA</a></li>
+</ul>
+
+<div class="destinations-page">
+    <div class="page-header">
+        <h1> Popüler Rotalar</h1>
+    </div>
+    <div class="destinations-grid">
+        <div class="destination-card">
+            <div class="destination-image" style="background-image: url('https://i.pinimg.com/736x/4a/f5/63/4af563aa26d3a4d3d612771aa1dc640f.jpg');">
+                <div class="image-overlay"></div>
+                <div class="destination-name">Paris, Fransa</div>
+            </div>
+            <div class="destination-info">
+                <p class="destination-desc">LA CLEF ile sessiz bir konaklamanın tadını çıkarın</p>
+                <div class="destination-price">
+                    <span class="price">899€</span>
+                    <span class="duration">10 gün</span>
+                </div>
+                <div class="action-section">
+                  <a href="#" class="btn-reserve">
+                         Rezervasyon Yap
+                  </a>
+               </div>
+            </div>
+        </div>
+        <div class="destination-card">
+            <div class="destination-image" style="background-image: url('https://i.pinimg.com/736x/b4/de/be/b4debed569d9a5cc0d912dfbc040cdbe.jpg');">
+                <div class="image-overlay"></div>
+                <div class="destination-name">Ankara, Türkiye</div>
+            </div>
+            <div class="destination-info">
+                <p class="destination-desc">Anıtkabir (Atatürk Mozolesi) Ankara, Müze</p>
+                <div class="destination-price">
+                    <span class="price">450€</span>
+                    <span class="duration">7 gün</span>
+                </div>
+                <div class="action-section">
+                  <a href="#" class="btn-reserve">
+                         Rezervasyon Yap
+                  </a>
+               </div>
+            </div>
+        </div>
+        <div class="destination-card">
+            <div class="destination-image" style="background-image: url('https://i.pinimg.com/736x/0e/9e/cc/0e9ecc1ff21b8c223125f635a68c16c0.jpg');">
+                <div class="image-overlay"></div>
+                <div class="destination-name">Tokyo, Japonya</div>
+            </div>
+            <div class="destination-info">
+                <p class="destination-desc">Etkinlikler ve yaratıcılık</p>
+                <div class="destination-price">
+                    <span class="price">1200€</span>
+                    <span class="duration">12 gün</span>
+                </div>
+                <div class="action-section">
+                  <a href="#" class="btn-reserve">
+                         Rezervasyon Yap
+                  </a>
+               </div>
+            </div>
+        </div>
+
+</div>
+
+<style>
+
+.page-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: white;
+     text-align: center;
+}
+
+.subtitle {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.1rem;
+}
+
+.destinations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.destination-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.destination-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.destination-image {
+    height: 250px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    padding: 1.5rem;
+}
+
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.3), transparent);
+}
+
+.destination-name {
+    position: relative;
+    z-index: 2;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.destination-info {
+    padding: 1.5rem;
+}
+
+.destination-desc {
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+
+.destination-price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.price {
+    color: #f59e0b;
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+.duration {
+    color: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+.action-section {
+    padding: 0.75rem 1.5rem;
+  outline: none;
+  border: none;
+  font-size: 1rem;
+  white-space: nowrap;
+  color: var(--white);
+  background-color: var(--primary-color);
+  border-radius: 5rem;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.btn-reserve {
+    display: inline-block;
+    background: linear-gradient(135deg, #4d67da, #4d67da );
+    color: white;
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-reserve:hover {
+    background: linear-gradient(135deg, #d97706, #b45309);
+    transform: scale(1.05);
+    box-shadow: 0 10px 25px rgba(245, 158, 11, 0.4);
+}
+
+
+@media (max-width: 768px) {
+    .destinations-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .page-header h1 {
+        font-size: 2rem;
+    }
+    
+    .destination-image {
+        height: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .destinations-page {
+        padding: 1rem;
+    }
+    
+    .destination-price {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: flex-start;
+    }
+}
+</style>
+{% endblock %}
