@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="principale">
+    <div class="logo">
+        <a href="{% url 'core:anasayfa' %}">KURESEL<span>TURİZM</span></a>
+    </div>
+    <ul>
+         <li><a href="#">ANASAYFA</a></li>
+        <li><a href="#destination">HEDEFLER</a></li>
+        <li><a href="#">HAKKINDA</a></li>
+        <li><a href="#">İLETİŞİM</a></li>
+        
+    </ul>
+</div>
+
+<div class="titre">
+    <h1>SEYAHAT__UZAY</h1>
+    <p class="sous-titre">   Dünyayı keşfedin ve kendinizi KÜRESEL TURİZM ile ödüllendirin.  </p>
+</div>
+
+<div class="bouton">
+    {% if user.is_authenticated %}
+    <a href=" #destinations " class="btn">DESTİNASYONLARIMIZI KEŞFEDİN</a>
+    {% else %}
+    <a href="/visite/" class="btn">MACERAYA BAŞLA</a>
+    {% endif %}
+</div>
+
+{% if user.is_authenticated %}
+<div class="user-welcome">
+    <h2>Tekrar hoş geldin, {{ user.first_name }} {{ user.last_name }} !</h2>
+    <p>Bir sonraki maceraya hazır mısın?</p>
+</div>
+{% endif %}
+
+<style>
+.sous-titre  {
+    color: #f4f7f7;
+    font-size: 1.6rem;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    font-weight: 300;
+    justify-content: center;
+    align-items: center;
+}
+
+</style>
+{% endblock %}

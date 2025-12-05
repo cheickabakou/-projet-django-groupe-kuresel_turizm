@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="principale">
+    <div class="logo">
+        <a href="{% url 'core:anasayfa' %}">KURESEL<span>TURİZM</span></a>
+    </div>
+    <ul>
+        <li><a href="/visite/">ANASAYFA</a></li>
+    </ul>
+</div>
+
+<div class="about-content">
+    <h1>KURESEL TURİZM Hakkında</h1>
+    <p class="description">2025'ten beri unutulmaz deneyimler için güvenilir seyahat acenteniz</p>
+
+    <div class="about-grid">
+        <div class="about-card">
+             <h3><i class="bi bi-stars text-warning"></i>Misyonumuz</h3>
+            <p>Her müşterimiz için seyahati erişilebilir ve unutulmaz kılmak, beklentileri aşan benzersiz deneyimler yaratarak.</p>
+        </div>
+
+        <div class="about-card">
+            <h3><i class="bi bi-eye-fill text-primary"></i> Vizyonumuz</h3>
+            <p>Lüks, otantiklik ve yerel kültürlere saygıyı birleştiren seyahatler sunarak dünya çapında sorumlu turizmin lideri olmak.</p>
+        </div>
+        
+        <div class="about-card">
+           <h3><i class="bi bi-trophy-fill text-warning"></i> Değerlerimiz</h3>
+            <p>Olağanüstü kalite, mutlak güven, sürekli yenilik ve müşteri hizmetlerinde mükemmelliğe bağlılık.</p>
+        </div>
+        
+        <div class="about-card">
+            <h3><i class="bi bi-clock-history"></i>Tarihimiz</h3>
+            <p>2025'te kurulan KURESEL TURİZM, seyahate olan tutkumuz sayesinde küçük bir yerel acenteden uluslararası bir referans haline geldi.</p>
+        </div>
+        
+        <div class="about-card">
+            <h3><i class="bi bi-people-fill text-primary"></i> Ekibimiz</h3>
+            <p>50'den fazla ülkeyi ziyaret etmiş, çok dilli, tutkulu seyahat uzmanları size en iyi tavsiyeleri sunmak için burada.</p>
+        </div>
+        
+        <div class="about-card">
+            <h3><i class="bi bi-award-fill text-info"></i> Taahhüdümüz</h3>
+            <p>%100 müşteri memnuniyeti garantisi. Her maceracı için mükemmel seyahati yaratmaya kendimizi adıyoruz.</p>
+        </div>
+    </div>
+</div>
+
+<style>
+.description {
+    font-size: 1.3rem;
+    margin-bottom: 3rem;
+    color: #f4f7f7;
+    opacity: 0.9;
+}
+</style>
+{% endblock %}
