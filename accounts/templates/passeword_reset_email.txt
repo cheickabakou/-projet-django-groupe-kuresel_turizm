@@ -1,0 +1,28 @@
+Merhaba {{ user.first_name }} {{ user.last_name }},
+
+Küresel Turizm hesabınız için bir şifre sıfırlama talebi aldık.
+
+Şifrenizi sıfırlamak için aşağıdaki bağlantıya tıklayın:
+{{ reset_url }}
+
+ÖNEMLİ BİLGİLER:
+- Bu bağlantı 24 saat geçerlidir
+- Bağlantıyı yalnızca bir kez kullanabilirsiniz
+- Eğer bu talebi siz yapmadıysanız, bu e-postayı dikkate almayın
+
+Bağlantıyı tarayıcınıza kopyalayıp yapıştırabilirsiniz:
+{{ reset_url }}
+
+ Demo Notu: Bu bir test e-postasıdır. Gerçek uygulamada bu bağlantı aktif olacaktır.
+
+Herhangi bir sorunuz varsa, destek ekibimizle iletişime geçebilirsiniz.
+
+Saygılarımızla,
+Küresel Turizm Ekibi
+
+---
+© {% now "Y" %} Küresel Turizm. Tüm hakları saklıdır.
+Bu e-posta otomatik olarak gönderilmiştir. Lütfen yanıtlamayınız.
+Adres: İstanbul, Türkiye
+Telefon: (0501) 150 45 67
+E-posta: destek@kureselturizm.com

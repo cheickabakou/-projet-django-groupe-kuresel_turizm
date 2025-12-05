@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Şifre Değiştirildi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .success-icon {
+            color: #28a745;
+            font-size: 60px;
+            margin-bottom: 20px;
+            animation: bounce 1s infinite alternate;
+        }
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
+        }
+        h1 {
+            color: #284747;
+            margin-bottom: 20px;
+        }
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            border-left: 4px solid #28a745;
+        }
+        .demo-note {
+            background: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px;
+            font-weight: bold;
+        }
+        .btn-primary {
+            background: #284747;
+            color: white;
+        }
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+        .next-steps {
+            margin-top: 40px;
+            text-align: left;
+        }
+        .step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        .step-icon {
+            background: #284747;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="success-icon">🎉</div>
+        <h1>Başarıyla Tamamlandı!</h1>
+        
+        <div class="success-message">
+            <p><strong>Tebrikler! 🎯</strong></p>
+            <p>Şifreniz başarıyla güncellendi. Artık yeni şifrenizle giriş yapabilirsiniz.</p>
+        </div>
+        
+        <div class="demo-note">
+            💡 Demo Notu: Bu bir gösterimdir. Gerçek uygulamada şifreniz veritabanında güncellenir.
+        </div>
+        
+        <div>
+            <a href="{% url 'accounts:login' %}" class="btn btn-primary">Giriş Yap</a>
+            <a href="/" class="btn btn-secondary">Ana Sayfa</a>
+        </div>
+        
+        <div class="next-steps">
+            <h3 style="color: #284747; margin-bottom: 15px; text-align: center;">📋 Sonraki Adımlar</h3>
+            <div class="step">
+                <div class="step-icon">🔐</div>
+                <div>Yeni şifrenizle giriş yapın</div>
+            </div>
+            <div class="step">
+                <div class="step-icon">👤</div>
+                <div>Profil bilgilerinizi kontrol edin</div>
+            </div>
+            <div class="step">
+                <div class="step-icon">🌍</div>
+                <div>Hizmetlerimizi keşfetmeye başlayın</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        setInterval(() => {
+            const icon = document.querySelector('.success-icon');
+            icon.style.animation = 'none';
+            setTimeout(() => {
+                icon.style.animation = 'bounce 1s infinite alternate';
+            }, 10);
+        }, 5000);
+    </script>
+</body>
+</html>
+{% endblock %}
