@@ -7,7 +7,7 @@
     </div>
     <ul>
          <li><a href="#">ANASAYFA</a></li>
-        <li><a href="#destination">HEDEFLER</a></li>
+        <li><a href="#">HEDEFLER</a></li>
         <li><a href="#">HAKKINDA</a></li>
         <li><a href="#">İLETİŞİM</a></li>
         
@@ -20,19 +20,12 @@
 </div>
 
 <div class="bouton">
-    {% if user.is_authenticated %}
-    <a href=" #destinations " class="btn">DESTİNASYONLARIMIZI KEŞFEDİN</a>
-    {% else %}
-    <a href="/visite/" class="btn">MACERAYA BAŞLA</a>
-    {% endif %}
+
+    <a href="{% url 'visite:index' %}" class="btn">MACERAYA BAŞLA</a>
+    
 </div>
 
-{% if user.is_authenticated %}
-<div class="user-welcome">
-    <h2>Tekrar hoş geldin, {{ user.first_name }} {{ user.last_name }} !</h2>
-    <p>Bir sonraki maceraya hazır mısın?</p>
-</div>
-{% endif %}
+
 
 <style>
 .sous-titre  {

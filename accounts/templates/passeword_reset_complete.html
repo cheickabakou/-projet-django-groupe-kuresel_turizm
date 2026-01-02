@@ -104,39 +104,41 @@
 <body>
     <div class="container">
         <div class="success-icon">🎉</div>
-        <h1>Başarıyla Tamamlandı!</h1>
-        
+        <h1>Successfully Completed!</h1>
+
         <div class="success-message">
-            <p><strong>Tebrikler! 🎯</strong></p>
-            <p>Şifreniz başarıyla güncellendi. Artık yeni şifrenizle giriş yapabilirsiniz.</p>
+            <p><strong>Congratulations! 🎯</strong></p>
+            <p>Your password has been successfully updated. You can now log in using your new password.</p>
         </div>
-        
-        <div class="demo-note">
-            💡 Demo Notu: Bu bir gösterimdir. Gerçek uygulamada şifreniz veritabanında güncellenir.
-        </div>
-        
+
+
         <div>
-            <a href="{% url 'accounts:login' %}" class="btn btn-primary">Giriş Yap</a>
-            <a href="/" class="btn btn-secondary">Ana Sayfa</a>
+            <a href="{% url 'accounts:login' %}" class="btn btn-primary">Log In</a>
+            <a href="/" class="btn btn-secondary">Home</a>
         </div>
-        
+
         <div class="next-steps">
-            <h3 style="color: #284747; margin-bottom: 15px; text-align: center;">📋 Sonraki Adımlar</h3>
+            <h3 style="color: #284747; margin-bottom: 15px; text-align: center;">
+                📋 Next steps
+            </h3>
+
             <div class="step">
                 <div class="step-icon">🔐</div>
-                <div>Yeni şifrenizle giriş yapın</div>
+                <div>Log in with your new password</div>
             </div>
+
             <div class="step">
                 <div class="step-icon">👤</div>
-                <div>Profil bilgilerinizi kontrol edin</div>
+                <div>Check your profile information</div>
             </div>
+
             <div class="step">
                 <div class="step-icon">🌍</div>
-                <div>Hizmetlerimizi keşfetmeye başlayın</div>
+                <div>Start exploring our services</div>
             </div>
         </div>
     </div>
-    
+
     <script>
         setInterval(() => {
             const icon = document.querySelector('.success-icon');

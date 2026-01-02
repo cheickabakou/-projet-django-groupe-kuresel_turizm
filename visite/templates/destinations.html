@@ -2,93 +2,61 @@
 
 {% block content %}
 
-   
+
 <ul>
     <li><a href="/visite/">ANASAYFA</a></li>
 </ul>
 
 <div class="destinations-page">
     <div class="page-header">
-        <h1> Popüler Rotalar</h1>
+        <h1>Popular Destinations</h1>
     </div>
+    
     <div class="destinations-grid">
+        {% for d in destinations %}
         <div class="destination-card">
-            <div class="destination-image" style="background-image: url('https://i.pinimg.com/736x/4a/f5/63/4af563aa26d3a4d3d612771aa1dc640f.jpg');">
+            <div class="destination-image" style="background-image: url('{{ d.image.url }}');">
                 <div class="image-overlay"></div>
-                <div class="destination-name">Paris, Fransa</div>
-            </div>
-            <div class="destination-info">
-                <p class="destination-desc">LA CLEF ile sessiz bir konaklamanın tadını çıkarın</p>
-                <div class="destination-price">
-                    <span class="price">380€</span>
-                    <span class="duration">10 gün</span>
+                <div class="destination-name">{{ d.nom }}</div>
+                {% if d.discount > 0 %}
+                <div class="discount-badge">
+                    -{{ d.discount }}%
                 </div>
+                {% endif %}
+            </div>
+            
+            <div class="destination-info">
+                <p class="destination-desc">{{ d.description }}</p>
+                
+                <div class="destination-price">
+                    {% if d.discount > 0 %}
+                    <span class="price">
+                        <del>{{ d.price }}€</del>
+                        {{ d.final_price|floatformat:2 }}€
+                    </span>
+                    {% else %}
+                    <span class="price">{{ d.price }}€</span>
+                    {% endif %}
+                    <span class="duration">{{ d.duration }}</span>
+                </div>
+                
+                {% if d.available %}
                 <div class="action-section">
-                  <a href="{% url 'visite:reservation' %}" class="btn-reserve" onclick="selectDestination('Paris','Paris,Fransa,899')">
-                         Rezervasyon Yap
-                  </a>
-               </div>
+                    <a href="{% url 'visite:booking' %}?dest={{ d.id }}" class="btn-reserve">
+                        Book Now
+                    </a>
+                </div>
+                {% else %}
+                <p><i class="bi bi-x-circle" style="color:red; font-weight:bold;"></i> Fully Booked</p>
+                {% endif %}
             </div>
         </div>
-        <div class="destination-card">
-            <div class="destination-image" style="background-image: url('https://i.pinimg.com/736x/b4/de/be/b4debed569d9a5cc0d912dfbc040cdbe.jpg');">
-                <div class="image-overlay"></div>
-                <div class="destination-name">Ankara, Türkiye</div>
-            </div>
-            <div class="destination-info">
-                <p class="destination-desc">Anıtkabir (Atatürk Mozolesi) Ankara, Müze</p>
-                <div class="destination-price">
-                    <span class="price">350€</span>
-                    <span class="duration">7 gün</span>
-                </div>
-                <div class="action-section">
-                  <a href="{% url 'visite:reservation' %}" class="btn-reserve" onclick="selectDestination('Ankara','Ankara,Türkiye,450')">
-                         Rezervasyon Yap
-                  </a>
-               </div>
-            </div>
-        </div>
-        <div class="destination-card">
-            <div class="destination-image" style="background-image: url('https://i.pinimg.com/736x/0e/9e/cc/0e9ecc1ff21b8c223125f635a68c16c0.jpg');">
-                <div class="image-overlay"></div>
-                <div class="destination-name">Tokyo, Japonya</div>
-            </div>
-            <div class="destination-info">
-                <p class="destination-desc">Etkinlikler ve yaratıcılık</p>
-                <div class="destination-price">
-                    <span class="price">320€</span>
-                    <span class="duration">12 gün</span>
-                </div>
-                <div class="action-section">
-                  <a href="{% url 'visite:reservation' %}" class="btn-reserve" onclick="selectDestination('Tokyo','Tokyo,Japonya,850')">
-                         Rezervasyon Yap
-                  </a>
-               </div>
-            </div>
-        </div>
-
+        {% empty %}
+        <p style="color:white;">No destinations available</p>
+        {% endfor %}
+    </div>
 </div>
-<script>
-function selectDestination(id, name, price) {
-    localStorage.setItem('selectedDestinationId', id);
-    localStorage.setItem('selectedDestinationName', name);
-    localStorage.setItem('selectedDestinationPrice', price);
-    window.location.href = 'reservation.html';
-}
 
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.destination-card').forEach(card => {
-        card.addEventListener('click', function(e) {
-            if (!e.target.closest('.btn-reserve')) {
-                const id = this.dataset.id;
-                const name = this.dataset.name;
-                const price = this.dataset.price;
-                selectDestination(id, name, price);
-            }
-        })
-    })
-})
-</script>
 
 <style>
 
@@ -96,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
     font-size: 2.5rem;
     margin-bottom: 0.5rem;
     color: white;
-     text-align: center;
+    text-align: center;
 }
 
 .subtitle {
@@ -188,15 +156,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
 .action-section {
     padding: 0.75rem 1.5rem;
-  outline: none;
-  border: none;
-  font-size: 1rem;
-  white-space: nowrap;
-  color: var(--white);
-  background-color: var(--primary-color);
-  border-radius: 5rem;
-  transition: 0.3s;
-  cursor: pointer;
+    outline: none;
+    border: none;
+    font-size: 1rem;
+    white-space: nowrap;
+    color: var(--white);
+    background-color: var(--primary-color);
+    border-radius: 5rem;
+    transition: 0.3s;
+    cursor: pointer;
 }
 
 .btn-reserve {
@@ -219,6 +187,18 @@ document.addEventListener('DOMContentLoaded', function() {
     box-shadow: 0 10px 25px rgba(245, 158, 11, 0.4);
 }
 
+.discount-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #e74c3c;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    z-index: 2;
+}
 
 @media (max-width: 768px) {
     .destinations-grid {

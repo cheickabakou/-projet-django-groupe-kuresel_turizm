@@ -1,0 +1,484 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #4673a0;
+            color: #333;
+            line-height: 1.6;
+        }
+
+    
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: rgb(15, 15, 15);
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo span {
+            color: #4dabf7;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition:  0.3s;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .login-btn {
+            background-color: #007BFF;
+            color: rgb(27, 26, 26);
+            border: none;
+            border-radius: 8px;
+            padding: 10px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .login-btn:hover {
+            background-color: #0056b3;
+        }
+
+        
+        .container {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        
+        .reservation-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            background: rgb(241, 236, 236);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .reservation-header h1 {
+            color: #1e3c72;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .reservation-header p {
+            color: #666;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+
+        .reservation-form-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        
+        .form-section {
+            background: rgb(247, 244, 244);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-section h2 {
+            color: #1e3c72;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #131111;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #444;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .required {
+            color: #e63946;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 12px 16px;
+            border: 2px solid #1d1e1f;
+            border-radius: 8px;
+            font-size: 16px;
+            color: black !important;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #007BFF;
+            
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        }
+
+        .form-full-width {
+            grid-column: 1 / -1;
+        }
+
+        .summary-section {
+            background: rgb(253, 252, 252);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            height: fit-content;
+            position: sticky;
+            top: 2rem;
+        }
+
+        .summary-section h2 {
+            color: #1e3c72;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #0f0e0e;
+        }
+
+        .destination-summary {
+            background: #788ca0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #007BFF;
+        }
+
+        .destination-summary h3 {
+            color: #1e3c72;
+            margin-bottom: 0.5rem;
+        }
+
+        .price-breakdown {
+            margin: 1.5rem 0;
+        }
+
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid #49728a;
+        }
+
+        .price-item.total {
+            border-top: 2px solid #1e3c72;
+            border-bottom: none;
+            padding-top: 1rem;
+            margin-top: 1rem;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #1e3c72;
+        }
+
+        .price-value {
+            font-weight: 600;
+        }
+
+
+        .reservation-btn-main {
+            background-color: #007BFF;
+            color: rgb(15, 14, 14);
+            border: none;
+            border-radius: 8px;
+            padding: 16px 32px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            width: 100%;
+            margin-top: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .reservation-btn-main:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 91, 187, 0.2);
+        }
+
+    
+        .payment-section {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid #fcf5f5;
+        }
+
+        .payment-options {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .payment-option {
+            flex: 1;
+            text-align: center;
+            padding: 1rem;
+            border: 2px solid #556781;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .payment-option.selected {
+            border-color: #007BFF;
+            background: #fafbfc;
+        }
+
+    
+        footer {
+            background: #1e3c72;
+            color: rgb(245, 242, 242);
+            padding: 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        
+        .card-icons {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            font-size: 1.5rem;
+        }
+
+
+        @media (max-width: 992px) {
+            .reservation-form-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .summary-section {
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .form-section,
+            .summary-section {
+                padding: 1.5rem;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                 <span>Küresel</span>Turizm
+            </div>
+            <ul class="nav-links">
+                <li><a href="/visite/">Ana Sayfa</a></li>
+            </ul>
+           
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="reservation-header">
+            <h1>SEYAHAT REZERVASYONU</h1>
+            <p>Aşağıdaki formu doldurarak rezervasyonunuzu tamamlayın. * ile işaretli alanlar zorunludur.</p>
+        </div>
+        <div class="reservation-form-container">
+        
+            <div class="form-section">
+                <h2> Kişisel Bilgiler</h2>
+                
+                <form method="POST" id="reservationForm">
+                    {% csrf_token%}
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="fullName">Ad Soyad <span class="required">*</span></label>
+                            <input type="text" id="fullName" name="nom_client" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">E-posta Adresi <span class="required">*</span></label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Telefon Numarası <span class="required">*</span></label>
+                            <input type="text" id="phone" name="telephone" required>
+                        </div>
+                    </div>
+
+                    <h2 style="margin-top: 2.5rem;"> Seyahat Detayları</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="destination">Destinasyon <span class="required">*</span></label>
+                            <select id="destination" name="destination" required>
+                                <option value="">Bir destinasyon seçin</option>
+                                {% for d in destinations %}
+                                  <option value="{{d.id}}" data-price="{{d.final_price}}">
+                                     {{d.nom}} - {{d.duration}}
+                                   </option>
+                               {% endfor %}
+                            </select>
+                        </div> 
+                        <div class="form-group">
+                            <label for="travelers">Yolcu Sayısı <span class="required">*</span></label>
+                            <select id="travelers" name="nb_personnes" required>
+                                <option value="1">1 kişi</option>
+                                <option value="2">2 kişi</option>
+                                <option value="3">3 kişi</option>
+                                <option value="4">4 kişi</option>
+                                <option value="5">5 kişi</option>
+                                <option value="6+">6+ kişi (grup)</option>
+                            </select>
+                        </div>
+                        
+                    </div>
+                    <input type="hidden" name="total_price" id="totalInput">
+                    <button type="submit">ONAYLA & DEVAM ET</button>
+                </form>
+            </div>
+            <div class="summary-section">
+                <h2> Rezervasyon Özeti</h2>
+                <div class="destination-summary">
+                    <p id="summaryDestination">Destinasyon</p>
+                    <p id="summaryTravelers">Yolcu: 0</p>
+                </div>
+                <div class="price-breakdown">
+                    <h3>Fiyat Detayı</h3>
+                    
+                    <div class="price-item">
+                        <span>Kişi Başı</span>
+                        <span id="pricePerPerson">0 €</span>
+                    </div>
+                    <div class="price-item">
+                        <span>vergi (1%) </span>
+                        <span id="taxes">0 €</span>
+                    </div>                  
+                    <div class="price-item total">
+                        <span>TOPLAM</span>
+                        <span id="totalPrice">0 €</span>
+                    </div>
+                </div>
+
+                <div style="margin-top: 1.5rem; font-size: 0.9rem; color: #666; text-align: center;">
+                    <p> Ödeme sonrası anında onay</p>
+                    <p> 7 gün öncesine kadar ücretsiz iptal</p>
+                    <p> 7/24 müşteri desteği</p>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="footer-content">
+            <p> 2025 Küresel Macera - Tüm hakları saklıdır</p>
+            <p> Dünya maceranız burada başlıyor</p>
+        </div>
+    </footer>
+   <script>
+      function updateSummary() {
+          const destination = document.querySelector("#destination");
+          const travelers = parseInt(document.querySelector("#travelers").value || 0);
+          if (!destination.value) return;
+             const price = parseFloat(
+             destination.options[destination.selectedIndex].dataset.price
+           );
+           const tax = price * travelers * 0.01;
+           const total = (price * travelers) + tax;
+           document.getElementById("summaryDestination").innerText =
+           destination.options[destination.selectedIndex].text;
+           document.getElementById("summaryTravelers").innerText =
+           "Yolcu: " + travelers;
+
+           document.getElementById("pricePerPerson").innerText = price + " €";
+          document.getElementById("taxes").innerText = tax.toFixed(1) + " €";
+          document.getElementById("totalPrice").innerText = total.toFixed(2) + " €";
+          document.getElementById("totalInput").value = total.toFixed(2);
+        }
+        document.querySelectorAll("#destination, #travelers")
+       .forEach(el => el.addEventListener("change", updateSummary));
+   </script>
+</body>
+</html>
+{% endblock %}

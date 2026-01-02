@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block content %}
+<ul>
+    <li><a href="/visite/">ANASAYFA</a></li>
+</ul>
+<div class="container" style="max-width: 900px; margin: 2rem auto;">
+
+    <h1 style="margin-bottom: 2rem; color: white;">My Bookings</h1>
+    
+    
+    <div class="search-box" style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px; margin-bottom: 2rem;">
+        <h3 style="margin-bottom: 1rem;"><i class="bi bi-search"></i> Find My Bookings</h3>
+        <form method="GET" action="">
+            <div style="display: flex; gap: 1rem;">
+                <input type="email" 
+                       name="email" 
+                       placeholder="Enter your email address" 
+                       required
+                       style="flex: 1; padding: 0.75rem; border: 1px solid #ddd; border-radius: 5px;">
+                <button type="submit" 
+                        style="padding: 0.75rem 1.5rem; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                    Search
+                </button>
+            </div>
+            <small style="color: #817c7c; display: block; margin-top: 0.5rem;">
+                Enter the email address you used for your bookings.
+            </small>
+        </form>
+
+    </div>
+
+    <!-- Bookings List -->
+    {% if searched_email %}
+        {% if bookings %}
+            <h3 style="margin-bottom: 1rem; color: white;">
+                Bookings for: <strong>{{ searched_email }}</strong>
+                <span style="font-size: 0.9em; color: #28a745; margin-left: 1rem;">
+                    ({{ bookings|length }} booking{{ bookings|length|pluralize:"s" }})
+                </span>
+            </h3>
+            
+            <div class="bookings-list">
+                {% for reservation in bookings %}
+                <div class="booking-card" style="background: white; border: 1px solid #eee; border-radius: 10px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <div>
+                            <h4 style="margin: 0; color: #333;">{{ reservation.destination.nom }}</h4>
+                            <p style="margin: 0.5rem 0; color: #666;">
+                                <small>Reference: #{{ reservation.id }} | Date: {{ reservation.created_at|date:"d/m/Y H:i" }}</small>
+                            </p>
+                        </div>
+                        <span style="background: #28a745; color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.9em;">
+                            Confirmed
+                        </span>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                        <div>
+                            <p style="margin: 0.25rem 0;"><strong><i class="bi bi-person-fill"></i> Name:</strong> {{ reservation.nom_client }}</p>
+                            <p style="margin: 0.25rem 0;"><strong><i class="bi bi-envelope-fill"></i> Email:</strong> {{ reservation.email }}</p>
+                            <p style="margin: 0.25rem 0;"><strong><i class="bi bi-telephone-fill"></i> Phone:</strong> {{ reservation.telephone }}</p>
+                        </div>
+                        <div>
+                            <p style="margin: 0.25rem 0;"><strong><i class="bi bi-people-fill"></i> People:</strong> {{ reservation.nb_personnes }}</p>
+                            <p style="margin: 0.25rem 0;"><strong><i class="bi bi-currency-exchange"></i> Total Price:</strong> {{ reservation.total_price }} €</p>
+                            <p style="margin: 0.25rem 0;"><strong><i class="bi bi-calendar-week"></i> Booked on:</strong> {{ reservation.created_at|date:"d/m/Y" }}</p>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 1rem; border-top: 1px solid #eee; padding-top: 1rem;">
+                        <a href="{% url 'visite:confirmation' reservation.id %}" 
+                           style="padding: 0.5rem 1rem; background: #007bff; color: white; text-decoration: none; border-radius: 5px; font-size: 0.9em;">
+                            <i class="bi bi-file-text-fill"></i> View Details
+                        </a>
+
+                        <a href="{% url 'visite:ticket_pdf' reservation.id %}" 
+                         style="padding: 0.5rem 1rem; background: #28a745; color: white; text-decoration: none; border-radius: 5px; font-size: 0.9em;">
+                         <i class="bi bi-upload"></i> Download Ticket (PDF)
+                       </a>
+
+                        <a href="{% url 'visite:delete_booking' reservation.id %}" 
+                           style="padding: 0.5rem 1rem; background: #dc3545; color: white; text-decoration: none; border-radius: 5px; font-size: 0.9em;"
+                           onclick="return confirm('Are you sure you want to cancel this booking?')">
+                            <i class="bi bi-trash"></i> Delete
+                        </a>
+                        <button onclick="window.print()" 
+                                style="padding: 0.5rem 1rem; background: #6c757d; color: white; border: none; border-radius: 5px; font-size: 0.9em; cursor: pointer;">
+                            <i class="bi bi-floppy2"></i> Print
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+        {% else %}
+            <div style="text-align: center; padding: 3rem; background: #fff3cd; border-radius: 10px; border: 1px solid #ffeaa7;">
+                <h3 style="color: #856404;">No Bookings Found</h3>
+                <p>We couldn't find any bookings for email: <strong>{{ searched_email }}</strong></p>
+                <p>Please check your email or contact us if you think this is an error.</p>
+            </div>
+        {% endif %}
+    {% else %}
+        <div style="text-align: center; padding: 3rem; background: #e7f3ff; border-radius: 10px;">
+            <h3>👋 Welcome!</h3>
+            <p>To view your bookings, please enter your email address in the field above.</p>
+            <p><small>You will also receive booking confirmations by email.</small></p>
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}

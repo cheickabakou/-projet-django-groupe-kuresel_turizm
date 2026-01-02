@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="delete-confirmation-container">
+    <div class="card">
+        <div class="card-header bg-danger text-white">
+            <h3 class="mb-0">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Confirm Booking Deletion
+            </h3>
+        </div>
+        
+        <div class="card-body">
+            <div class="alert alert-warning">
+                <strong>Warning:</strong> This action cannot be undone. Your booking will be permanently deleted.
+            </div>
+            
+            <h5 class="mb-3">Booking Details:</h5>
+            
+            <div class="booking-details mb-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Booking ID:</strong> #{{ reservation.id }}</p>
+                        <p><strong>Customer:</strong> {{ reservation.nom_client }}</p>
+                        <p><strong>Email:</strong> {{ reservation.email }}</p>
+                        <p><strong>Phone:</strong> {{ reservation.telephone }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Destination:</strong> {{ reservation.destination.nom }}</p>
+                        <p><strong>Date:</strong> {{ reservation.created_at|date:"F d, Y H:i" }}</p>
+                        <p><strong>Travelers:</strong> {{ reservation.nb_personnes }}</p>
+                        <p><strong>Total:</strong> {{ reservation.total_price }} €</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="security-check">
+                <h6 class="mb-3">
+                    <i class="fas fa-shield-alt me-2 text-primary"></i>
+                    Security Verification
+                </h6>
+                
+                <form method="POST" id="deleteForm">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="email_verif" class="form-label">
+                            Please enter your email address to confirm:
+                        </label>
+                        <input type="email" 
+                               class="form-control" 
+                               id="email_verif" 
+                               name="email_verif" 
+                               required
+                               placeholder="your-email@example.com">
+                        <div class="form-text">
+                            Enter the email address you used when making this booking.
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex gap-3 mt-4">
+                        <button type="submit" class="btn btn-danger flex-fill">
+                            <i class="fas fa-trash-alt me-2"></i>
+                            Yes, Delete This Booking
+                        </button>
+                        
+                        <a href="{% url 'visite:my_bookings' %}" 
+                           class="btn btn-outline-secondary flex-fill">
+                            <i class="fas fa-arrow-left me-2"></i>
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.delete-confirmation-container {
+    max-width: 800px;
+    margin: 3rem auto;
+    padding: 1rem;
+}
+
+.booking-details {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+.card {
+    border: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-radius: 12px;
+}
+
+.card-header {
+    border-radius: 12px 12px 0 0 !important;
+    padding: 1.25rem 1.5rem;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    padding: 0.75rem;
+    font-weight: 600;
+}
+
+.btn-danger:hover {
+    background-color: #bb2d3b;
+    border-color: #b02a37;
+}
+</style>
+{% endblock %}

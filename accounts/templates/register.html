@@ -2,15 +2,16 @@
 
 {% block content %}
 <ul>
-    <li><a href="/visite/" class="active">ANASAYFA</a></li>
+    <li><a href="{% url 'core:anasayfa' %}">HOME</a></li>
 </ul>
+
 <div class="auth-container">
     <div class="auth-form">
         <div class="form-header">
-            <h1>Kayıt</h1>
-            <p>Kuresel Turizm macerasına katılın</p>
+            <h1>Register</h1>
+            <p>Join the global tourism adventure</p>
         </div>
-        
+
         {% if messages %}
         <div class="messages">
             {% for message in messages %}
@@ -23,62 +24,77 @@
 
         <form method="POST" class="auth-form-content">
             {% csrf_token %}
-            
+
             <div class="form-row">
                 <div class="form-group">
-                    <label for="first_name">Adı</label>
-                    <input type="text" id="first_name" name="first_name" placeholder="Votre prénom" required>
+                    <label for="first_name">First name</label>
+                    <input type="text" id="first_name" name="first_name" placeholder="Your first name">
                 </div>
-                
+
                 <div class="form-group">
-                    <label for="last_name"> Soyadı</label>
-                    <input type="text" id="last_name" name="last_name" placeholder="Votre nom" required>
+                    <label for="last_name">Last name</label>
+                    <input type="text" id="last_name" name="last_name" placeholder="Your last name">
                 </div>
             </div>
-            
+
             <div class="form-group">
-                <label for="username">Kullanıcı_adı</label>
-                <input type="text" id="username" name="username" placeholder="Choisissez un nom d'utilisateur" required>
+                <label for="id_username">Username</label>
+                <input type="text" id="id_username" name="username" placeholder="Choose a username" value="{{ form.username.value|default:'' }}" required>
+                {% if form.username.errors %}
+                    <small style="color:red;">{{ form.username.errors.0 }}</small>
+                {% endif %}
             </div>
-            
+
             <div class="form-group">
-                <label for="email"> E-posta adresi</label>
-                <input type="email" id="email" name="email" placeholder="votre@email.com" required>
+                <label for="id_email">Email address</label>
+                <input type="email"  id="id_email"  name="email"  placeholder="your@email.com"  value="{{ form.email.value|default:'' }}"  required>
+                {% if form.email.errors %}
+                    <small style="color:red;">{{ form.email.errors.0 }}</small>
+                {% endif %}
             </div>
-            
+
             <div class="form-row">
                 <div class="form-group">
-                    <label for="password">Şifre</label>
-                    <input type="password" id="password" name="password" placeholder="Minimum 6 caractères" required>
-                    <small class="form-text text-muted"> En az 8 karakter, harf ve sayı içermeli</small>
+                    <label for="id_password1">Password</label>
+                    <input type="password" id="id_password1" name="password1" placeholder="Minimum 8 characters" required>
+                    {% if form.password1.errors %}
+                        <small style="color:red;">{{ form.password1.errors.0 }}</small>
+                    {% endif %}
                 </div>
-                
+
                 <div class="form-group">
-                    <label for="confirm_password">Şifreyi onayla</label>
-                    <input type="password" id="confirm_password" name="confirm_password" placeholder="Répétez le mot de passe" required>
+                    <label for="id_password2">Confirm password</label>
+                    <input type="password" id="id_password2" name="password2" placeholder="Repeat your password" required>
+                    {% if form.password2.errors %}
+                        <small style="color:red;">{{ form.password2.errors.0 }}</small>
+                    {% endif %}
                 </div>
             </div>
-            
-            <a type="#" class="btn-auth btn-register">
-                <span>Hesap oluştur</span>
-            </a>
+
+            <button type="submit" class="btn-auth btn-register">
+                <span>Create account</span>
+            </button>
         </form>
 
         <div class="auth-links">
-            <p>Zaten Hesabınız var mı?</p>
-            <a href="{% url 'accounts:login' %}" class="auth-link">Giriş yap</a>
+            <p>Already have an account?</p>
+            <a href="{% url 'accounts:login' %}" class="auth-link">Log in</a>
         </div>
-        
+
         <div class="registration-benefits">
-            <h3><i class="bi bi-gift-fill" style="color: #ffc107; font-size: 1.5rem;"></i> Kaydın Avantajları</h3>
+            <h3>
+                <i class="bi bi-gift-fill" style="color: #ffc107; font-size: 1.5rem;"></i>
+                Registration benefits
+            </h3>
             <ul>
-                <li><i class="bi bi-check-all text-success"></i> Tüm özel varış noktamıza erişim</li>
-                <li><i class="bi bi-check-all text-success"></i>Üyeler için özel teklifler</li>
-                <li><i class="bi bi-check-all text-success"></i> Rezervasyon geçmişiniz</li>
-                <li><i class="bi bi-check-all text-success"></i> Kişiye özel seyahat önerileri</li>
-                <li><i class="bi bi-check-all text-success"></i>Öncelikli müşteri desteği</li>
+                <li><i class="bi bi-check-all text-success"></i> Access to all exclusive destinations</li>
+                <li><i class="bi bi-check-all text-success"></i> Members-only special offers</li>
+                <li><i class="bi bi-check-all text-success"></i> Booking history</li>
+                <li><i class="bi bi-check-all text-success"></i> Personalized travel recommendations</li>
+                <li><i class="bi bi-check-all text-success"></i> Priority customer support</li>
             </ul>
         </div>
+
     </div>
 </div>
 

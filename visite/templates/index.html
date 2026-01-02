@@ -166,16 +166,16 @@
         </div>
       </div>
       <ul class="nav_links" id="nav-links">
-        <li><a href="{% url 'core:anasayfa' %}">ANASAYFA</a></li>
+        
         <li><a href="{% url 'core:about' %}">HAKKINDA</a></li>
         <li><a href="#tour">BİLGİ</a></li>
-        <li><a href="#package">PAKET</a></li>
+        <li><a href="my_bookings">RESERVASYONLARIM</a></li>
         <li><a href="{% url 'core:contact' %}">İLETİŞİM</a></li>
         <li><a href="#">.</a></li>
       </ul>
       <div class="nav_btns">
-        <a href="{% url 'accounts:login' %}" class="btn">GİRİŞ YAP</a>
-        <a href="#" class="btn">ÇIKIŞ YAP</a>
+        
+        <a href="{% url 'accounts:profile' %}" class="btn">👤</a>
       </div>
     </nav>
 
@@ -323,12 +323,7 @@
           gezinme olanağı sağlar. Planlamaya başladığınız andan eve döndüğünüz güne kadar, seyahat 
           deneyiminizi sorunsuz ve zenginleştirici kılmak için çalışıyoruz.
         </p>
-        <div class="showcase_btn">
-          <button class="btn">
-            Şimdi Bir Uçuş Rezervasyonu Yapın
-            <span><i class="ri-arrow-right-line"></i></span>
-          </button>
-        </div>
+        
       </div>
     </section>
 

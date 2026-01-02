@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="max-width:780px;margin:3rem auto;background:#fff;padding:2em;border-radius:10px;">
+    <h1>Reservation confirmed ✓</h1>
+    
+    <p>Thank you <strong>{{ reservation.nom_client }}</strong>!</p>
+    
+    <h2>Reservation details:</h2>
+    <p><strong>Destination:</strong> {{ reservation.destination.nom }}</p>
+    <p><strong>Number of people:</strong> {{ reservation.nb_personnes }}</p>
+    <p><strong>Email:</strong> {{ reservation.email }}</p>
+    <p><strong>Phone:</strong> {{ reservation.telephone }}</p>
+    <p><strong>Total price:</strong> {{ reservation.total_price }} €</p>
+    <p><strong>Reservation date:</strong> {{ reservation.created_at|date:"d/m/Y H:i" }}</p>
+    
+    <div class="actions" style="margin-top: 2rem; display: flex; gap: 1rem;">
+        <a href="{% url 'core:anasayfa' %}" class="btn btn-primary">
+            Back to home
+        </a>
+        
+        <!-- Button to cancel this reservation -->
+        <a href="{% url 'visite:delete_booking' reservation.id %}" 
+           class="btn btn-danger"
+           onclick="return confirm('Are you sure you want to cancel this reservation?')">
+
+            Cancel this reservation
+        </a>
+    </div>
+</div>
+{% endblock %}
