@@ -26,11 +26,11 @@ def register_view(request):
                 user=user,
                 activity_type='REGISTER',
                 ip_address=request.META.get('REMOTE_ADDR'),
-                details='User registration'
+                details='Kullanıcı kaydı'
             )
 
-            logger.info(f"New user registered: {user.username}")
-            messages.success(request, "Registration successful!")
+            logger.info(f"Yeni kullanıcı kaydoldu: {user.username}")
+            messages.success(request, "Kayıt başarılı!")
             return redirect('visite:index')
     else:
         form = CustomUserCreationForm()
@@ -51,14 +51,14 @@ def login_view(request):
                 user=user,
                 activity_type='LOGIN',
                 ip_address=request.META.get('REMOTE_ADDR'),
-                details='User logged in'
+                details='Kullanıcı giriş yaptı'
             )
 
-            logger.info(f"User logged in: {user.username}")
+            logger.info(f"Kullanıcı giriş yaptı: {user.username}")
             next_url = request.POST.get('next')
             return redirect(next_url or 'visite:index')
         else:
-            messages.error(request, "Invalid username or password")
+            messages.error(request, "Geçersiz kullanıcı adı veya şifre")
     else:
         form = CustomAuthenticationForm()
 
@@ -70,11 +70,11 @@ def logout_view(request):
         user=request.user,
         activity_type='LOGOUT',
         ip_address=request.META.get('REMOTE_ADDR'),
-        details='User logged out'
+        details='Kullanıcı çıkış yaptı'
     )
-    logger.info(f"User logged out: {request.user.username}")
+    logger.info(f"Kullanıcı çıkış yaptı: {request.user.username}")
     logout(request)
-    messages.info(request, "You have been logged out")
+    messages.info(request, "Oturumunuz kapatıldı")
     return redirect('accounts:login')
 
 def forgot_password_view(request):
@@ -85,14 +85,15 @@ def forgot_password_view(request):
         users = User.objects.filter(email=email)
 
         if users.exists():
-            # Stocker l'email dans la session pour l'étape suivante
+
             request.session['reset_email'] = email
             messages.success(
                 request,
                 "✓ Şifre sıfırlama bağlantısı e-posta adresinize gönderildi."
             )
-            # Rediriger vers la page de réinitialisation
+
             return redirect('accounts:reset_password')
+        
         else:
             messages.error(
                 request,
@@ -110,15 +111,15 @@ def reset_password_view(request):
         return redirect('visite:index')
     
     User = get_user_model()
-    
-    # Récupérer l'email depuis la session
+
+
     reset_email = request.session.get('reset_email')
     
     if not reset_email:
         messages.error(request, "Geçersiz şifre sıfırlama talebi!")
         return redirect('accounts:forgot_password')
     
-    # Trouver l'utilisateur
+
     try:
         user = User.objects.get(email=reset_email)
     except User.DoesNotExist:
@@ -129,7 +130,7 @@ def reset_password_view(request):
         new_password = request.POST.get('new_password')
         confirm_password = request.POST.get('confirm_password')
         
-        # Validation
+
         if not new_password or not confirm_password:
             messages.error(request, "Lütfen tüm alanları doldurun!")
             return render(request, 'reset_password.html')
@@ -142,23 +143,22 @@ def reset_password_view(request):
             messages.error(request, "Şifre en az 6 karakter olmalı!")
             return render(request, 'reset_password.html')
         
-        # ICI : CHANGER ET SAUVEGARDER LE MOT DE PASSE
-        user.set_password(new_password)  # ← Cryptage automatique
-        user.save()  # ← Sauvegarde dans la base de données
+        user.set_password(new_password)
+        user.save()
         
-        # Nettoyer la session
+
         if 'reset_email' in request.session:
             del request.session['reset_email']
         
-        # Journaliser l'activité
+
         UserActivity.objects.create(
             user=user,
             activity_type='PASSWORD_CHANGE',
             ip_address=request.META.get('REMOTE_ADDR'),
-            details='Password reset via forgot password'
+            details='Şifre sıfırlama işlemi'
         )
         
-        logger.info(f"Password reset for user: {user.username}")
+        logger.info(f"Kullanıcının şifresi sıfırlandı: {user.username}")
         messages.success(request, "✅ Şifreniz başarıyla değiştirildi!")
         return redirect('accounts:password_reset_complete')
     
@@ -188,9 +188,9 @@ def profile_view(request):
                 user=request.user,
                 activity_type='PROFILE_UPDATE',
                 ip_address=request.META.get('REMOTE_ADDR'),
-                details='Profile updated'
+                details='Profil güncellendi'
             )
-            messages.success(request, "Profile updated successfully")
+            messages.success(request, "Profil başarıyla güncellendi")
         
         return redirect('accounts:profile')
     
@@ -201,55 +201,43 @@ def profile_view(request):
     })
 
 def confirm_reset_password(request, uidb64=None, token=None):
-    """Confirme et change le mot de passe"""
-    
-    # DEBUG: Voir si on reçoit une requête POST
-    print("=" * 50)
-    print(f"Méthode: {request.method}")
-    print(f"POST data: {dict(request.POST)}")
-    print("=" * 50)
-    
+
     if request.user.is_authenticated:
         return redirect('visite:index')
     
     User = get_user_model()
     
-    # Décoder le token
+
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
     except:
         user = None
     
-    # Vérifier si le lien est valide
+
     if user is None or not default_token_generator.check_token(user, token):
-        messages.error(request, "Lien invalide ou expiré!")
+        messages.error(request, "Geçersiz veya süresi dolmuş bağlantı!")
         return redirect('accounts:forgot_password')
     
     if request.method == 'POST':
-        # DEBUG: Voir exactement ce qu'on reçoit
-        print("Champs reçus:")
-        print(f"- password: '{request.POST.get('password')}'")
-        print(f"- confirm_password: '{request.POST.get('confirm_password')}'")
-        
+
+
         password = request.POST.get('password')
         confirm = request.POST.get('confirm_password')
         
-        # Validation
+
         if not password or not confirm:
-            print("ERREUR: Champs vides!")
-            messages.error(request, "Veuillez remplir les deux champs!")
+            messages.error(request, "Lütfen her iki alanı da doldurun!")
         elif password != confirm:
-            print(f"ERREUR: '{password}' != '{confirm}'")
-            messages.error(request, "Les mots de passe ne correspondent pas!")
+            messages.error(request, "Şifreler uyuşmuyor!")
         elif len(password) < 6:
-            messages.error(request, "Le mot de passe doit avoir au moins 6 caractères!")
+          
+            messages.error(request, "Şifre en az 6 karakter uzunluğunda olmalıdır!")
         else:
-            # Enregistrer le nouveau mot de passe
+            
             user.set_password(password)
             user.save()
-            
-            messages.success(request, "✅ Mot de passe changé avec succès!")
+            messages.success(request, "✅ Şifre başarıyla değiştirildi!")
             return redirect('accounts:login')
     
     return render(request, 'reset_password.html', {

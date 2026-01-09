@@ -11,14 +11,14 @@ urlpatterns = [
     path('profile/', views.profile_view, name='profile'),
     path('', views.home_view, name='home'),
     
-    # CORRECTION : Utilise le BON nom pour la vue de confirmation
+    
     path('forgot_password/', 
          auth_views.PasswordResetView.as_view(
              template_name="forgot_password.html", 
-             email_template_name="password_reset_email.html",  # Utilise le bon paramètre
+             email_template_name="password_reset_email.html",  
              subject_template_name="password_reset_subject.txt",
              success_url=reverse_lazy("accounts:password_reset_done"),
-             html_email_template_name="password_reset_email.html",  # Pour HTML
+             html_email_template_name="password_reset_email.html",  
          ), 
          name="forgot_password"),
     

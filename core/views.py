@@ -16,44 +16,34 @@ def contact(request):
         subject = request.POST.get('subject')
         message = request.POST.get('message')
         
-        # Construire le message
-        full_message = f"""
-        Nouveau message depuis le site Küresel Turizm:
-        
-        Nom: {name}
-        Email: {email}
-        Sujet: {subject}
-        
-        Message:
-        {message}
-        """
+    
+        full_message = f"""Küresel Turizm web sitesinden yeni mesaj: Ad Soyad: {name} E-posta: {email} Konu: {subject} Mesaj: {message}"""
         
         try:
-            # FORME CLASSIQUE - Django utilise les paramètres de settings.py
+            
             send_mail(
-                subject=f"[Site Web] {subject}",
+                subject=f"[Web Sitesi] {subject}",
                 message=full_message,
-                from_email=settings.DEFAULT_FROM_EMAIL,  # ← Django remplace automatiquement
-                recipient_list=[settings.DEFAULT_FROM_EMAIL],  # ← Envoie à l'agence
+                from_email=settings.DEFAULT_FROM_EMAIL,  
+                recipient_list=[settings.DEFAULT_FROM_EMAIL],  
                 fail_silently=False,
             )
             
-            # Copie à l'utilisateur (optionnel)
+            
             send_mail(
-                subject=f"Confirmation: {subject}",
-                message=f"Merci {name} pour votre message. Nous vous répondrons sous peu.\n\nVotre message:\n{message}",
+                subject=f"Onay: {subject}",
+                message=f"Sayın {name}, mesajınız için teşekkür ederiz. En kısa sürede size dönüş yapacağız.\n\nMesajınız:\n{message}",
                 from_email=settings.DEFAULT_FROM_EMAIL,
                 recipient_list=[email],
                 fail_silently=False,
             )
             
-            messages.success(request, "✅ Message envoyé avec succès !")
+            messages.success(request, "✅ Mesajınız başarıyla gönderildi!")
             
         except Exception as e:
-            # Message générique pour l'utilisateur
-            messages.error(request, "❌ Une erreur est survenue. Veuillez réessayer.")
-            # Mais on log l'erreur réelle
-            print(f"ERREUR EMAIL: {e}")
+            messages.error(request, "❌ Bir hata oluştu. Lütfen tekrar deneyiniz.")
+            
+            print(f"E-POSTA HATASI: {e}")
         
         return redirect('core:contact')
     

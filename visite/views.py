@@ -39,7 +39,7 @@ def booking(request):
             total_price=request.POST.get("total_price"),
         )
 
-        # Automatic email
+        
         send_mail(
             subject="Booking Confirmation",
             message=(
@@ -101,26 +101,26 @@ def my_bookings(request):
     })
 
 def ticket_pdf(request, reservation_id):
-    # Get the reservation
+    
     reservation = get_object_or_404(Reservation, id=reservation_id)
     
-    # Create buffer for PDF
+    
     buffer = io.BytesIO()
     
-    # Create PDF canvas
+    
     p = canvas.Canvas(buffer, pagesize=letter)
     width, height = letter
     
-    # --- HEADER ---
+    
     p.setFont("Helvetica-Bold", 24)
     p.drawString(100, height - 100, "🎫 BOOKING TICKET")
     p.setFont("Helvetica", 10)
     p.drawString(100, height - 120, f"Booking No: #{reservation.id}")
     
-    # Separator line
+    
     p.line(50, height - 140, width - 50, height - 140)
     
-    # --- LOGO (optional) ---
+    
     try:
         logo_path = os.path.join(settings.MEDIA_ROOT, 'logo.png')
         if os.path.exists(logo_path):
@@ -129,7 +129,7 @@ def ticket_pdf(request, reservation_id):
     except:
         pass
     
-    # --- CUSTOMER INFORMATION ---
+
     y_position = height - 180
     
     p.setFont("Helvetica-Bold", 14)
@@ -151,7 +151,7 @@ def ticket_pdf(request, reservation_id):
         p.drawString(150, y_position, str(value))
         y_position -= 25
     
-    # --- TRAVEL DETAILS ---
+    
     y_position -= 20
     p.setFont("Helvetica-Bold", 14)
     p.drawString(50, y_position, "TRAVEL DETAILS")
@@ -172,7 +172,7 @@ def ticket_pdf(request, reservation_id):
         p.drawString(150, y_position, str(value))
         y_position -= 25
     
-    # --- BARCODE/QR CODE (simulated) ---
+    
     y_position -= 40
     p.rect(50, y_position - 30, width - 100, 40, fill=0)
     p.setFont("Helvetica-Bold", 16)
@@ -180,33 +180,33 @@ def ticket_pdf(request, reservation_id):
     p.setFont("Helvetica", 10)
     p.drawCentredString(width / 2, y_position - 25, "Present this code at check-in")
     
-    # --- TERMS AND CONDITIONS ---
+    
     y_position -= 80
     p.setFont("Helvetica-Oblique", 9)
     conditions = [
         "This ticket is valid only for the booked date.",
         "Present an ID card with this ticket.",
         "Cancellation possible up to 48h before departure.",
-        "Contact: contact@voyages.com | +33 1 23 45 67 89",
+        "Contact: kureselturizm@gmail.com ",
     ]
     
     for condition in conditions:
         p.drawString(50, y_position, condition)
         y_position -= 15
     
-    # --- FOOTER ---
+    
     p.setFont("Helvetica", 8)
     p.drawCentredString(width / 2, 50, "Thank you for choosing our services!")
     p.drawCentredString(width / 2, 40, f"Document generated on: {timezone.now().strftime('%d/%m/%Y %H:%M')}")
     
-    # Finalize PDF
+    
     p.showPage()
     p.save()
     
-    # Retrieve buffer
+    
     buffer.seek(0)
     
-    # Return PDF response
+    
     response = HttpResponse(buffer, content_type='application/pdf')
     response['Content-Disposition'] = f'attachment; filename="booking_ticket_{reservation.id}.pdf"'
     return response
