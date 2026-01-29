@@ -1,5 +1,6 @@
 from django.db import models
-from django.utils import timezone
+from django.conf import settings
+
 
 class Destination(models.Model):
     nom = models.CharField("Destination Name", max_length=100)
@@ -24,11 +25,14 @@ class Destination(models.Model):
 
 
 class Reservation(models.Model):
-    destination = models.ForeignKey(
-        Destination,
-        verbose_name="Destination",
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="reservations"
+    )
+    destination = models.ForeignKey(
+        Destination, 
+        on_delete=models.CASCADE
     )
     nom_client = models.CharField("Customer Name", max_length=100)
     email = models.EmailField("Email")

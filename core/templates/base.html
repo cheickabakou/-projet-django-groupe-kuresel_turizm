@@ -271,14 +271,14 @@
 <body>
     <header>
         {% block content %}
-        <!-- Le contenu spécifique de chaque page viendra ici -->
+        
         {% endblock %}
     </header>
 
     <script>
-        // JavaScript pour les fonctionnalités de base
+        
         document.addEventListener('DOMContentLoaded', function() {
-            // Animation des boutons
+            
             const buttons = document.querySelectorAll('button, .btn');
             buttons.forEach(button => {
                 button.addEventListener('mouseenter', function() {
@@ -289,7 +289,7 @@
                 });
             });
 
-            // Auto-hide messages après 5 secondes
+            
             const messages = document.querySelectorAll('.alert');
             messages.forEach(message => {
                 setTimeout(() => {
